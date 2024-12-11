@@ -47,7 +47,7 @@ class ShoppingItemAdapter(
         }
 
         ivMinus.setOnClickListener {
-            if (curShoppingItem.amount > 0) {
+            if (curShoppingItem.amount > 1) {
                 curShoppingItem.amount--
                 viewModel.insert(curShoppingItem)
             }
