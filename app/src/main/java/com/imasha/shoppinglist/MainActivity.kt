@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.NewInstanceFactory.Companion.instance
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,17 +18,26 @@ import com.imasha.shoppinglist.ui.shoppinglist.AddDialogListener
 import com.imasha.shoppinglist.ui.shoppinglist.AddItemDialog
 import com.imasha.shoppinglist.ui.shoppinglist.ShoppingViewModel
 import com.imasha.shoppinglist.ui.shoppinglist.ShoppingViewModelFactory
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
+import org.kodein.di.generic.instance
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), KodeinAware {
+
+    override val kodein by kodein()
+    private val factory: ShoppingViewModelFactory by instance()
+
+    lateinit var viewModel: ShoppingViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val database = ShoppingDatabase(this);
+        /*val database = ShoppingDatabase(this);
         val repository = ShoppingRepository(database)
-        val factory = ShoppingViewModelFactory(repository)
+        val factory = ShoppingViewModelFactory(repository)*/
 
-        val viewModel = ViewModelProviders.of(this, factory)[ShoppingViewModel::class.java]
+        viewModel = ViewModelProviders.of(this, factory)[ShoppingViewModel::class.java]
 
         val adapter = ShoppingItemAdapter(listOf(), viewModel)
 
